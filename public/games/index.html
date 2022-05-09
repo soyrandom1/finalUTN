@@ -106,9 +106,11 @@
               <input type="text" class="form-control" name="gameLinkEdit" id="gameLinkEdit" >
               <label for="gameImageEdit" class="form-label">Imagen</label>
               <input type="text" class="form-control" name="gameImageEdit" id="gameImageEdit" >
+              <input type="text" class="form-control" name="gameId" id="gameId" style="visibility:hidden;">
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+              <button class="btn btn-danger" type="submit" data-dismiss="modal" onclick="deleteData();">Borrar</button>
               <button class="btn btn-primary" type="submit">Guardar</button>
             </div>
           </form>

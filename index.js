@@ -10,6 +10,7 @@ const Datastore = require('nedb')
 const path = require('path')
 const store = new session.MemoryStore()
 
+var md5 = require('md5')
 
 const configs = require('./common/Configurations.js')
 
@@ -19,7 +20,7 @@ const indexDB = new Datastore('index.db')
 const linksDB = new Datastore('links.db')
 const gamesDB = new Datastore('games.db')
 const noticiasDB = new Datastore('noticias.db')
-const database = new Datastore('database.db')
+const whitelistDB = new Datastore('whitelist.db')
 
 app.listen(configs.PORT, () => console.log("listening at " + configs.PORT))
 
@@ -49,14 +50,29 @@ app.use(session({
 app.use(passport.initialize())
 app.use(passport.session())
 
+gamesDB.loadDatabase()
+noticiasDB.loadDatabase()
+indexDB.loadDatabase()
+linksDB.loadDatabase()
+whitelistDB.loadDatabase()
+
 passport.use(new passportLocal(function(username, password, done) {
-    if (password === 'nacho' && username === 'admin') {
-        return done(null, {
-            id: 1,
-            name: 'admin'
-        })
-    }
-    done(null, false)
+    whitelistDB.find({
+        username: username
+    }, (error, data) => {
+        if (error) {
+            done(error, false)
+        }
+        if (md5(password) === data[0].password) {
+            return done(null, {
+                id: data[0]._id,
+                name: data[0].username
+            })
+        }
+        done(null, false)
+    })
+
+
 }))
 
 passport.serializeUser(function(user, done) {
@@ -64,16 +80,20 @@ passport.serializeUser(function(user, done) {
 })
 
 passport.deserializeUser(function(id, done) {
-    done(null, {
-        id: 1,
-        name: 'admin'
+    whitelistDB.find({
+        _id: id
+    }, (error, data) => {
+        if (error) {
+            done(error, false)
+        }
+        done(null, {
+            id: data[0]._id,
+            name: data[0].username
+        })
     })
+
 })
 
-gamesDB.loadDatabase()
-noticiasDB.loadDatabase()
-indexDB.loadDatabase()
-linksDB.loadDatabase()
 
 app.get('/', (request, response) => {
     // DETECTAR SI EL USER ESTA INCIADO
@@ -182,11 +202,10 @@ app.post('/api/modals/index', (request, response) => {
 })
 
 app.post('/api/games/edit', (request, response) => {
-    console.log(request.body)
     if (request.isAuthenticated()) {
         let data = request.body
         gamesDB.update({
-            gameName: data.gameNameEdit,
+            _id: data.gameId,
         }, {
             gameName: data.gameNameEdit,
             gameDescriptionLong: data.gameDescriptionLongEdit,
@@ -205,24 +224,38 @@ app.post('/api/games/edit', (request, response) => {
     response.redirect("/games")
 })
 
+app.post('/api/games/delete', (request, response) => {
+    console.log(request.body)
+    if (request.isAuthenticated()) {
+        var data = request.body
+        gamesDB.remove(data, {}, function(err, numRemoved) {
+            if(err) {
+                console.error(err)
+            }
+        })
+    }
+    response.redirect("/games")
+})
+
+
 app.post('/api/links/edit', (request, response) => {
     console.log(request.body)
-        if (request.isAuthenticated()) {
-             let data = request.body
-             linksDB.update({
-                 identifier: data.identifier,
-             }, {
-                gameName: data.gameNameEdit,
-                linkName: data.linkNameEdit,
-                linkLink: data.linkLinkEdit
-             }, {}, function(err, numReplaced) {
-                 if (err) {
-                     console.error('Unexpected error at DB update')
-                 } else {
-                     console.log('Replaced: ', numReplaced)
-                 }
-             })
-         }
+    if (request.isAuthenticated()) {
+        let data = request.body
+        linksDB.update({
+            identifier: data.identifier,
+        }, {
+            gameName: data.gameNameEdit,
+            linkName: data.linkNameEdit,
+            linkLink: data.linkLinkEdit
+        }, {}, function(err, numReplaced) {
+            if (err) {
+                console.error('Unexpected error at DB update')
+            } else {
+                console.log('Replaced: ', numReplaced)
+            }
+        })
+    }
     response.redirect("/links")
 })
 
@@ -230,7 +263,7 @@ app.post('/api/links/add', (request, response) => {
     if (request.isAuthenticated()) {
         let data = request.body
         data.identifier = Date.now() + data.linkName // Genera un ID unico
-        if(data.linkName && data.linkLink) {
+        if (data.linkName && data.linkLink) {
             linksDB.insert(data)
         }
     }
@@ -268,13 +301,13 @@ function responseManager(response, root) {
     response.end()
     console.log(root)
 }
+let user = {
+    username: "admin",
+    password: 'nacho'
+}
 
-function dropDBDEVELOP() {
-    database.remove({}, {
-        multi: true
-    }, function(err, numRemoved) {
-        database.loadDatabase(function(err) {
-            // done
-        });
-    });
+function createUser(user) {
+    console.log('user')
+    user.password = md5(user.password)
+    whitelistDB.insert(user)
 }

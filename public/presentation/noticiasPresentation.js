@@ -16,6 +16,9 @@ function showNoticiasData(data) {
             element.style.visibility = 'visible';
         }
     }
+    data.sort(function(a,b) {
+        return new Date(b.date) - new Date(a.date)
+    })
     for (var i = 0; i < data.length; i++) {
         document.getElementById('newsContainer').innerHTML += `<div class="col-md-12"><h1 id="${i}h1"></h1><h6 style="color: grey;" id="${i}h6"></h6><p id="${i}p"></p></div><hr><div class="col-md-12">`
         document.getElementById(`${i}h1`).textContent = data[i].newTitle

@@ -16,6 +16,7 @@ function showGamesData(data) {
     try {
         for (var i = 0; i < 3; i++) {
             document.getElementById(`${getImgNumber(i)}`).src = data[randomIds[i]].gameImage
+            document.getElementById(`${getImgNumber(i)}`).alt = data[randomIds[i]].altFoto
             document.getElementById(`${getNameNumber(i)}`).textContent = data[randomIds[i]].gameName
             document.getElementById(`${getDescriptionNumber(i)}`).textContent = data[randomIds[i]].gameDescriptionShort
         }
@@ -39,6 +40,7 @@ function showGamesData(data) {
         <img src="../assets/svg/pencil.svg" width="20em">
       </button></td>`
             document.getElementById(`${i}ImgId`).src = data[i].gameImage
+            document.getElementById(`${i}ImgId`).alt = data[i].altFoto
             document.getElementById(`${i}PId`).textContent = data[i].gameDescriptionShort
             rowsCounter++
             if (rowsCounter >= 3) {
@@ -91,13 +93,26 @@ function getDescriptionNumber(id) {
     if (id == 2)
         return 'thirdImageP'
 }
-
+let gameId = null
 function populateModal(id) {
     console.log(gameViewData[id])
     document.getElementById('gameNameEdit').value = gameViewData[id].gameName
+    document.getElementById('gameId').value = gameViewData[id]._id
     document.getElementById('gameDescriptionLongEdit').textContent = gameViewData[id].gameDescriptionLong
     document.getElementById('gameDescriptionShortEdit').textContent = gameViewData[id].gameDescriptionShort
     document.getElementById('altFotoEdit').value = gameViewData[id].altFoto
     document.getElementById('gameLinkEdit').value = gameViewData[id].gameLink
     document.getElementById('gameImageEdit').value = gameViewData[id].gameImage
+    gameId = gameViewData[id]._id
+}
+
+function deleteData() {
+    let data = {_id: gameId}
+    fetch('/api/games/delete', {
+      method: "POST",
+      headers: {'Content-Type': 'application/json'}, 
+      body: JSON.stringify(data)
+    }).then(res => {
+      console.log('Request complete! response:', res);
+    });
 }

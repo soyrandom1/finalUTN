@@ -22,6 +22,9 @@ const gamesDB = new Datastore('games.db')
 const noticiasDB = new Datastore('noticias.db')
 const whitelistDB = new Datastore('whitelist.db')
 
+let secrets = require('./secrets')
+
+
 app.listen(configs.PORT, () => console.log("listening at " + configs.PORT))
 
 // testeo para posible migracion
@@ -36,9 +39,9 @@ app.use(express.urlencoded({
         extended: true
     })) // nos permite leer los datos enviados por un formulario
 
-app.use(cookieParser('9890h6754j787')) // el hash deberia estar oculto por obvias razones. 
+app.use(cookieParser(secrets.cookies())) // el hash deberia estar oculto por obvias razones. 
 app.use(session({
-        secret: '9890h6754j787', // el hash deberia estar oculto por obvias razones. 
+        secret: secrets.session(), // el hash deberia estar oculto por obvias razones. 
         cookie: {
             maxAge: 100000
         },
@@ -96,7 +99,6 @@ passport.deserializeUser(function(id, done) {
 
 
 app.get('/', (request, response) => {
-    // DETECTAR SI EL USER ESTA INCIADO
     responseManager(response, '../index')
 
 })
@@ -106,6 +108,9 @@ app.get('/index', (request, response) => {
 app.get('/links', (request, response) => {
     responseManager(response, '../links')
 })
+app.get('/manifesto', (request, response) => {
+    responseManager(response, '../manifesto')
+})
 app.get('/games', (request, response) => {
     responseManager(response, '../games')
 })
@@ -113,7 +118,6 @@ app.get('/noticias', (request, response) => {
     responseManager(response, '../noticias')
 })
 app.get('/login', (request, response) => {
-    // formulario
     response.render('login')
 })
 

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" type="text/css" href="../extraStyles.css">
+    <title>Club de Desarrollo de Videojuegos UNT</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">C.D.V.</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/index">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/links">Links de la comunidad</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/games">Juegos de los miembros</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/noticias">noticias</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Manifesto</a>
+            </li>
+          </ul>
+          <span class="navbar-text">
+            Club Desarrollo de Videojuegos UNT
+          </span>
+        </div>
+      </div>
+    </nav>
+    <h1 class="text-center text-wrap">Juegos seleccionados</h1>
+    <button class="btn-primary adminGamesView" data-toggle="modal" data-target="#addGameModal">Agregar juego</button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="addGameModal" tabindex="-1" role="dialog" aria-labelledby="addGameModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addGameModalLabel">Agregar Juego</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <form action="/api/setters/games" method="POST">
+            <div class="modal-body">
+              <label for="gameName" class="form-label">Nombre del juego</label>
+              <input type="text" name="gameName" class="form-control" placeholder="Nombre del juego" id="gameName">
+              <label for="gameDescriptionLong" class="form-label">Descripcion del juego (larga)</label>
+              <textarea type="text" name="gameDescriptionLong" class="form-control" name="gameDescriptionLong" id="gameDescriptionLong" cols="60"> </textarea>
+              <label for="gameDescriptionShort" class="form-label">Descripcion del juego (corta)</label>
+              <textarea type="text" name="gameDescriptionShort" class="form-control" name="gameDescriptionShort" id="gameDescriptionShort" cols="60" rows="1"> </textarea>
+              <label for="altFoto" class="form-label">Texto alternativo de la foto (obligatorio)</label>
+              <input type="text" class="form-control" name="altFoto" id="altFoto" >
+              <label for="gameLink" class="form-label">Link</label>
+              <input type="text" class="form-control" name="gameLink" id="gameLink" >
+              <label for="gameImage" class="form-label">Imagen</label>
+              <input type="text" class="form-control" name="gameImage" id="gameImage" >
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+              <button class="btn btn-primary" type="submit">Guardar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- Modal END-->
+    <!-- Modal -->
+        <!-- Modal -->
+    <div class="modal fade" id="editGameModal" tabindex="-1" role="dialog" aria-labelledby="editGameModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editGameModalLabel">modificar Juego</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <form action="/api/games/edit" method="POST">
+            <div class="modal-body">
+              <label for="gameNameEdit" class="form-label">Nombre del juego</label>
+              <input type="text" name="gameNameEdit" class="form-control" placeholder="Nombre del juego" id="gameNameEdit">
+              <label for="gameDescriptionLongEdit" class="form-label">Descripcion del juego (larga)</label>
+              <textarea type="text" name="gameDescriptionLongEdit" class="form-control" id="gameDescriptionLongEdit" cols="60"> </textarea>
+              <label for="gameDescriptionShortEdit" class="form-label">Descripcion del juego (corta)</label>
+              <textarea type="text" name="gameDescriptionShortEdit" class="form-control" id="gameDescriptionShortEdit" cols="60" rows="1"> </textarea>
+              <label for="altFotoEdit" class="form-label">Texto alternativo de la foto (obligatorio)</label>
+              <input type="text" class="form-control" name="altFotoEdit" id="altFotoEdit" >
+              <label for="gameLinkEdit" class="form-label">Link</label>
+              <input type="text" class="form-control" name="gameLinkEdit" id="gameLinkEdit" >
+              <label for="gameImageEdit" class="form-label">Imagen</label>
+              <input type="text" class="form-control" name="gameImageEdit" id="gameImageEdit" >
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+              <button class="btn btn-primary" type="submit">Guardar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- Modal END-->
+    <!-- Modal END-->
+    <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+      </div>
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img src="" class="d-block w-100" alt="..." id="firstImage">
+          <div class="carousel-caption d-none d-md-block">
+            <h5 id="firstImageH5" style="color: yellow; background-color: grey; padding: .2em;  border-radius: 25px;"></h5>
+            <p id="firstImageP" style="color: yellow; background-color: grey; padding: .2em;  border-radius: 25px;"></p>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img src="" class="d-block w-100" alt="..." id="secondImage">
+          <div class="carousel-caption d-none d-md-block">
+            <h5 id="secondImageH5" style="color: yellow; background-color: grey; padding: .2em;  border-radius: 25px;"></h5>
+            <p id="secondImageP" style="color: yellow; background-color: grey; padding: .2em;  border-radius: 25px;"></p>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img src="" class="d-block w-100" alt="..." id="thirdImage">
+          <div class="carousel-caption d-none d-md-block">
+            <h5 id="thirdImageH5" style="color: yellow; background-color: grey; padding: .2em;  border-radius: 25px;"></h5>
+            <p id="thirdImageP" style="color: yellow; background-color: grey; padding: .2em;  border-radius: 25px;"></p>
+          </div>
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+
+    <table class="table">
+      <tbody id="gamesDisplayBody">
+
+      </tbody>
+    </table>
+  </body>
+  <!-- Footer -->
+  <footer
+    class="text-center text-lg-start text-white"
+    style="background-color: #3e4551"
+    >
+    <!-- Grid container -->
+    <div class="container p-4 pb-0">
+      <!-- Section: Links -->
+      <section class="">
+        <!--Grid row-->
+        <div class="row">
+          <!--Grid column-->
+          <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+            <h5 class="text-uppercase">C.D.V.</h5>
+            <p>
+              Semillero de talentos, trabajo en equipo, colaboración.
+            </p>
+          </div>
+          <!--Grid column-->
+          <!--Grid column-->
+          <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
+            <h5 class="text-uppercase">Redes oficiales</h5>
+            <ul class="list-unstyled mb-0">
+              <li>
+                <a href="#!" class="text-white">Discord</a>
+              </li>
+              <li>
+                <a href="#!" class="text-white">Facebook</a>
+              </li>
+              <li>
+                <a href="#!" class="text-white">Instagram</a>
+              </li>
+              <li>
+                <a href="#!" class="text-white">Itchio</a>
+              </li>
+            </ul>
+          </div>
+          <!--Grid column-->
+        </div>
+        <!--Grid row-->
+      </section>
+      <!-- Section: Links -->
+    </div>
+    <!-- Grid container -->
+    <!-- Copyright -->
+    <div
+      class="text-center p-3"
+      style="background-color: rgba(0, 0, 0, 0.2)"
+      >
+      2022:
+      <a class="text-white" target="_blank" href="http://www.expovirtual.unt.edu.ar/carreras.html"
+      >UNT</a
+      >
+    </div>
+    <!-- Copyright -->
+  </footer>
+  <!-- Footer -->
+  <script type="text/javascript" src="../presentation/gamesPresentation.js"></script>
+</html>

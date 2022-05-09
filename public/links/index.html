@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" type="text/css" href="../extraStyles.css">
+    <script type="text/javascript" src="../presentation/linksPresentation.js"></script>
+	<title>Club de Desarrollo de Videojuegos UNT</title>
+</head>
+
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">C.D.V.</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/index">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Links de la comunidad</a>
+        </li>
+         <li class="nav-item">
+          <a class="nav-link" href="/games">Juegos de los miembros</a>
+        </li>
+         <li class="nav-item">
+          <a class="nav-link" href="/noticias">noticias</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Manifesto</a>
+        </li>
+      </ul>
+      <span class="navbar-text">
+        Club Desarrollo de Videojuegos UNT
+      </span>
+    </div>
+  </div>
+</nav>
+      <button type="button" class="btn-primary adminView" data-toggle="modal" data-target="#genericModal">
+        Agregar link
+      </button>
+  <!-- Modal -->
+<div class="modal fade" id="genericModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="genericModalLabel">Agregar link</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form action="/api/links/add" method="POST">
+      <div class="modal-body">
+        <textarea type="text" name="linkName" id="linkName" cols="60" placeholder="Nombre del link"> </textarea>
+        <textarea type="text" name="linkLink" id="linkLink" cols="60" placeholder="link"> </textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <button class="btn btn-primary" type="submit">Guardar</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- Modal END-->
+
+  <!-- Modal -->
+<div class="modal fade" id="editLinkModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="genericModalLabel">Editar link</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form action='/api/links/edit' method="POST">
+      <div class="modal-body">
+        <textarea type="text" name="linkNameEdit" id="linkNameEdit" cols="60"> </textarea>
+        <textarea type="text" name="linkLinkEdit" id="linkLinkEdit" cols="60"> </textarea>
+        <textarea type="text" name="identifier" id="identifier" cols="60" style="visibility: hidden;"> </textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <button class="btn btn-primary" type="submit">Guardar</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- Modal END-->
+<div class="container-sm" style="width: 70%; margin-top: 4em; margin-bottom: 5em;" >
+  <h1 class="text-center text-wrap" >Links oficiales de nuestra comunidad: </h1>
+  <div id="linksContainer">
+
+  </div>
+</div>
+
+</body>
+ <!-- Footer -->
+  <footer
+          class="text-center text-lg-start text-white"
+          style="background-color: #3e4551"
+          >
+    <!-- Grid container -->
+    <div class="container p-4 pb-0">
+      <!-- Section: Links -->
+      <section class="">
+        <!--Grid row-->
+        <div class="row">
+          <!--Grid column-->
+          <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+            <h5 class="text-uppercase">C.D.V.</h5>
+
+            <p>
+              Semillero de talentos, trabajo en equipo, colaboración.
+            </p>
+          </div>
+          <!--Grid column-->
+
+          <!--Grid column-->
+          <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
+            <h5 class="text-uppercase">Redes oficiales</h5>
+
+            <ul class="list-unstyled mb-0">
+              <li>
+                <a href="#!" class="text-white">Discord</a>
+              </li>
+              <li>
+                <a href="#!" class="text-white">Facebook</a>
+              </li>
+              <li>
+                <a href="#!" class="text-white">Instagram</a>
+              </li>
+              <li>
+                <a href="#!" class="text-white">Itchio</a>
+              </li>
+            </ul>
+          </div>
+          <!--Grid column-->
+        </div>
+        <!--Grid row-->
+      </section>
+      <!-- Section: Links -->
+
+    </div>
+    <!-- Grid container -->
+
+    <!-- Copyright -->
+    <div
+         class="text-center p-3"
+         style="background-color: rgba(0, 0, 0, 0.2)"
+         >
+      2022:
+      <a class="text-white" target="_blank" href="http://www.expovirtual.unt.edu.ar/carreras.html"
+         >UNT</a
+        >
+    </div>
+    <!-- Copyright -->
+  </footer>
+  <!-- Footer -->
+
+</html>

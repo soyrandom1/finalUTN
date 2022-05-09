@@ -1,0 +1,24 @@
+.adminView {
+	position: absolute;
+	left: 90%;
+	visibility: hidden;
+}
+.adminViewPostNews {
+	visibility: hidden;
+}
+.adminGamesView {
+	display: none;
+}
+.loginBtn  {
+	margin-top: 1em;
+  	margin-left: 50%;
+}
+.loginFields {
+	max-width: 10%;
+	min-width: 10em;
+	margin: 0 auto;
+	margin-top: .5em;
+}
+.btnAdminGames {
+	margin: 1em;
+}

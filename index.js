@@ -186,7 +186,10 @@ app.get('/api/games', (request, response) => {
         response.json(data)
     })
 })
+
 app.post('/api/modals/index', (request, response) => {
+    {}
+
     if (request.isAuthenticated()) {
         let data = request.body.content
         indexDB.update({

@@ -33,7 +33,7 @@ function showGamesData(data) {
             }
             document.getElementById(`${rows}Tr`).innerHTML += `<td>
             <div class="card" style="width: 100%;">
-            <img id="${i}ImgId" class="card-img-top" alt="...">
+            <a id="${i}A" target="_blank"><img id="${i}ImgId" class="card-img-top" alt="..."></a>
             <div class="card-body">
             <p class="card-text" id="${i}PId"></p>
             </div></div><button type="button" class="btn adminGamesView" data-toggle="modal" data-target="#editGameModal" onclick="populateModal(${i});">
@@ -42,6 +42,7 @@ function showGamesData(data) {
             document.getElementById(`${i}ImgId`).src = data[i].gameImage
             document.getElementById(`${i}ImgId`).alt = data[i].altFoto
             document.getElementById(`${i}PId`).textContent = data[i].gameDescriptionShort
+            document.getElementById(`${i}A`).href = data[i].gameLink
             rowsCounter++
             if (rowsCounter >= 3) {
                 rowsCounter = 0
